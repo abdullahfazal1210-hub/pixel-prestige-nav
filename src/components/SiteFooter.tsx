@@ -43,11 +43,6 @@ export function SiteFooter() {
         duration: 0.7,
         stagger: 0.1,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-          once: true,
-        },
       });
       gsap.from("[data-footer-bottom]", {
         y: 16,
