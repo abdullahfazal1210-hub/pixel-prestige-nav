@@ -1,27 +1,49 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ChevronDown, Cpu, Menu, Monitor, Phone, Laptop, Server, X } from "lucide-react";
+import {
+  ChevronDown,
+  Cpu,
+  Laptop,
+  Menu,
+  Monitor,
+  Network,
+  Phone,
+  PhoneCall,
+  Server,
+  Signal,
+  Video,
+  X,
+} from "lucide-react";
+import logo from "@/assets/logo.png.asset.json";
 
-const systems = [
+type Item = { label: string; desc: string; icon: React.ElementType; hot?: boolean };
+
+const systems: Item[] = [
   { label: "LAPTOP PC", desc: "Ultrabooks & mobile workstations", icon: Laptop },
   { label: "DESKTOP / GAMING PC", desc: "RTX rigs, liquid-cooled builds", icon: Monitor, hot: true },
   { label: "BUSINESS SERVER", desc: "Rack, tower & NAS solutions", icon: Server },
   { label: "PARTS AND ACCESSORIES", desc: "GPUs, RAM, cooling, peripherals", icon: Cpu },
 ];
 
-const links = [
-  "HOME",
-  "REPAIR SERVICES AND NETWORKING",
-  "PHONE SERVICES",
-  "RESIDENTIAL VOIP",
-  "COMMERCIAL VOIP",
-  "CELLULAR SIGNAL BOOSTING",
-  "VIDEO SURVEILLANCE",
-  "CONTACT",
+const services: Item[] = [
+  { label: "REPAIR & NETWORKING", desc: "On-site repair, Wi-Fi & cabling", icon: Network },
+  { label: "CELLULAR SIGNAL BOOSTING", desc: "Full-bar coverage anywhere", icon: Signal },
+  { label: "VIDEO SURVEILLANCE", desc: "4K NVR & remote monitoring", icon: Video },
+];
+
+const voip: Item[] = [
+  { label: "RESIDENTIAL VOIP", desc: "Crystal-clear home calling", icon: Phone },
+  { label: "COMMERCIAL VOIP", desc: "Multi-line business systems", icon: PhoneCall },
+];
+
+const menus: { key: string; label: string; items: Item[] }[] = [
+  { key: "systems", label: "COMPUTER SYSTEMS", items: systems },
+  { key: "services", label: "SERVICES", items: services },
+  { key: "phone", label: "PHONE SERVICES", items: voip },
 ];
 
 export function SiteNav() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -32,7 +54,7 @@ export function SiteNav() {
     gsap.fromTo(
       items,
       { y: -18, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: "power3.out" },
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, ease: "power3.out" },
     );
   }, []);
 
@@ -66,6 +88,8 @@ export function SiteNav() {
     }
   }, [open]);
 
+  const active = menus.find((m) => m.key === open);
+
   return (
     <header className="sticky top-0 z-50">
       <div className="border-b border-border/60 bg-surface/80 backdrop-blur">
@@ -79,41 +103,50 @@ export function SiteNav() {
 
       <div
         ref={barRef}
-        onMouseLeave={() => setOpen(false)}
+        onMouseLeave={() => setOpen(null)}
         className="relative border-b border-border bg-background/95 backdrop-blur-xl"
       >
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3">
-          <a href="#" data-nav-item className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-md bg-[image:var(--gradient-primary)] font-display text-lg font-black text-primary-foreground shadow-[var(--shadow-glow)]">
-              P
-            </span>
-            <span className="font-display text-sm font-black leading-tight tracking-widest sm:text-base lg:text-lg">
-              PREMIUM <span className="text-primary">COMPUTER</span> SYSTEM
-            </span>
+        <div className="mx-auto flex max-w-7xl items-center gap-6 px-5 py-3">
+          <a href="/" data-nav-item className="shrink-0 rounded-md bg-white px-3 py-2">
+            <img
+              src={logo.url}
+              alt="Premium Computer Systems — computer sales and service"
+              width={320}
+              height={92}
+              className="h-9 w-auto sm:h-10"
+            />
           </a>
 
-          <nav className="ml-auto hidden items-center gap-1 xl:flex">
+          <nav className="ml-auto hidden items-center gap-1 lg:flex">
             <NavLink label="HOME" active />
-            <button
-              data-nav-item
-              onMouseEnter={() => setOpen(true)}
-              onClick={() => setOpen((v) => !v)}
-              className={`group flex items-center gap-1 rounded-md px-3 py-2 font-display text-[11px] font-bold tracking-widest transition-colors ${
-                open ? "bg-primary/15 text-primary" : "text-foreground/80 hover:text-primary"
-              }`}
-            >
-              COMPUTER SYSTEMS
-              <ChevronDown
-                className={`size-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-              />
-            </button>
-            {links.slice(1).map((l) => (
-              <NavLink key={l} label={l} />
+            {menus.map((m) => (
+              <button
+                key={m.key}
+                data-nav-item
+                onMouseEnter={() => setOpen(m.key)}
+                onClick={() => setOpen((v) => (v === m.key ? null : m.key))}
+                className={`group flex items-center gap-1 rounded-md px-3 py-2 font-display text-[11px] font-bold tracking-widest whitespace-nowrap transition-colors ${
+                  open === m.key ? "bg-primary/15 text-primary" : "text-foreground/80 hover:text-primary"
+                }`}
+              >
+                {m.label}
+                <ChevronDown
+                  className={`size-3.5 transition-transform duration-300 ${open === m.key ? "rotate-180" : ""}`}
+                />
+              </button>
             ))}
+            <NavLink label="CONTACT" />
+            <a
+              data-nav-item
+              href="#contact"
+              className="ml-2 rounded-md bg-[image:var(--gradient-primary)] px-4 py-2 font-display text-[11px] font-bold tracking-widest whitespace-nowrap text-primary-foreground shadow-[var(--shadow-glow)] transition-transform hover:scale-[1.04]"
+            >
+              GET A QUOTE
+            </a>
           </nav>
 
           <button
-            className="ml-auto rounded-md border border-border p-2 xl:hidden"
+            className="ml-auto rounded-md border border-border p-2 lg:hidden"
             onClick={() => setMobile((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -127,8 +160,8 @@ export function SiteNav() {
           style={{ display: "none" }}
           className="absolute inset-x-0 top-full border-b border-primary/30 bg-[image:var(--gradient-dark)] shadow-[var(--shadow-elevate)]"
         >
-          <div className="mx-auto grid max-w-7xl gap-3 px-5 py-6 md:grid-cols-4">
-            {systems.map((s) => (
+          <div className="mx-auto grid max-w-7xl gap-3 px-5 py-6 sm:grid-cols-2 lg:grid-cols-4">
+            {active?.items.map((s) => (
               <a
                 key={s.label}
                 href="#"
@@ -152,25 +185,21 @@ export function SiteNav() {
 
       {/* Mobile menu */}
       {mobile && (
-        <div className="animate-fade-in border-b border-border bg-card px-5 py-4 xl:hidden">
+        <div className="animate-fade-in border-b border-border bg-card px-5 py-4 lg:hidden">
           <p className="font-display text-[11px] font-bold tracking-widest text-primary">HOME</p>
-          <p className="mt-4 font-display text-[11px] font-bold tracking-widest">
-            COMPUTER SYSTEMS
-          </p>
-          <ul className="mt-2 space-y-2 border-l border-primary/40 pl-3">
-            {systems.map((s) => (
-              <li key={s.label} className="text-xs text-muted-foreground">
-                {s.label}
-              </li>
-            ))}
-          </ul>
-          <ul className="mt-4 space-y-3">
-            {links.slice(1).map((l) => (
-              <li key={l} className="font-display text-[11px] font-bold tracking-widest">
-                {l}
-              </li>
-            ))}
-          </ul>
+          {menus.map((m) => (
+            <div key={m.key} className="mt-4">
+              <p className="font-display text-[11px] font-bold tracking-widest">{m.label}</p>
+              <ul className="mt-2 space-y-2 border-l border-primary/40 pl-3">
+                {m.items.map((s) => (
+                  <li key={s.label} className="text-xs text-muted-foreground">
+                    {s.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p className="mt-4 font-display text-[11px] font-bold tracking-widest">CONTACT</p>
         </div>
       )}
     </header>
@@ -182,7 +211,7 @@ function NavLink({ label, active }: { label: string; active?: boolean }) {
     <a
       href="#"
       data-nav-item
-      className={`relative rounded-md px-3 py-2 font-display text-[11px] font-bold tracking-widest transition-colors after:absolute after:bottom-1 after:left-3 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-[calc(100%-1.5rem)] ${
+      className={`relative rounded-md px-3 py-2 font-display text-[11px] font-bold tracking-widest whitespace-nowrap transition-colors after:absolute after:bottom-1 after:left-3 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-[calc(100%-1.5rem)] ${
         active ? "text-primary" : "text-foreground/80 hover:text-primary"
       }`}
     >
