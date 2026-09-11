@@ -68,8 +68,8 @@ export function SiteFooter() {
               <span className="grid size-10 place-items-center rounded-md bg-[image:var(--gradient-primary)] font-display text-lg font-black text-primary-foreground shadow-[var(--shadow-glow)]">
                 P
               </span>
-              <span className="font-display text-base font-black tracking-widest">
-                PREMIUM <span className="text-primary">COMPUTER</span>
+              <span className="font-display text-sm font-black leading-tight tracking-widest sm:text-base">
+                PREMIUM <span className="text-primary">COMPUTER</span> SYSTEM
               </span>
             </a>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
