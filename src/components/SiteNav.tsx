@@ -85,10 +85,10 @@ export function SiteNav() {
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3">
           <a href="#" data-nav-item className="flex items-center gap-2">
             <span className="grid size-9 place-items-center rounded-md bg-[image:var(--gradient-primary)] font-display text-lg font-black text-primary-foreground shadow-[var(--shadow-glow)]">
-              N
+              P
             </span>
-            <span className="font-display text-lg font-black tracking-widest">
-              NEXA<span className="text-primary">TECH</span>
+            <span className="font-display text-base font-black tracking-widest sm:text-lg">
+              PREMIUM <span className="text-primary">COMPUTER</span>
             </span>
           </a>
 
