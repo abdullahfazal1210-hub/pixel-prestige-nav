@@ -2,24 +2,27 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SiteNav } from "@/components/SiteNav";
+import { SiteFooter } from "@/components/SiteFooter";
 import gamingPc from "@/assets/gaming-pc.jpg";
 import { Cpu, Gauge, ShieldCheck, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NexaTech | Premium Gaming PCs, Computer Systems & VoIP" },
+      { title: "Premium Computer System | Gaming PCs, Systems & VoIP" },
       {
         name: "description",
         content:
-          "Custom gaming PCs, laptops, business servers, repair, networking, VoIP, cellular boosting and video surveillance from NexaTech.",
+          "Custom gaming PCs, laptops, business servers, repair, networking, VoIP, cellular boosting and video surveillance from Premium Computer System.",
       },
-      { property: "og:title", content: "NexaTech | Premium Gaming PCs & Computer Systems" },
+      { property: "og:title", content: "Premium Computer System | Gaming PCs & Computer Systems" },
       {
         property: "og:description",
         content:
           "Custom-built gaming rigs, laptops, servers, repair and networking, VoIP and surveillance services.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -141,6 +144,8 @@ function Index() {
           </div>
         </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
